@@ -13,20 +13,13 @@ typedef struct product{
     int price_l;
 }pro;
 
-int strcmp(const char *s1, const char *s2);
-char *strcpy(char *s1, const char *s2);
-int atoi(const char *str);
 
 int GetCharByte(unsigned char* str);
-void showResult(pro* result, int index, int numl, int namel, int pricel, int i);
+void showResult(pro* result,int i);
 void showSpace(int max, int myself);
 
 int Maxlength(int maxLength, int myLength);
 int IndexLength(int index);
-
-int insert(pro* list, pro* insert, char insertList[][20], int iCount);
-void update(pro* update, char upList[][20]);
-int delete (pro* dl, char deleteList[][20], int i);
 
 
 int indexL = 2; //NOの表示バイト
@@ -40,7 +33,6 @@ int main() {
     
     pro p[10];
     pro* list = p; 
-    pro* head = p;
     pro* sw = p;
     
     
@@ -54,7 +46,7 @@ int main() {
     while( fscanf(fp, "%[^,],%[^,],%s%*c" ,list->num, list->name, list->price) != EOF ) {
         
         //一つ一つの構造体が自身の各コード、商品名、単価の桁数をもつ
-      list->num_l = GetCharByte(list->num);
+        list->num_l = GetCharByte(list->num);
         numL = Maxlength(numL, list->num_l);
         
         list->name_l = GetCharByte(list->name);
@@ -71,7 +63,7 @@ int main() {
     //--------------------------------------------
     //出力処理
     //--------------------------------------------
-    showResult(sw, indexL, numL, nameL, priceL,i);
+    showResult(sw,i);
     
     fclose(fp);
     return 0;
@@ -79,7 +71,7 @@ int main() {
 
 int GetCharByte(unsigned char* str)
 {
-    int cnt = 0;
+        int cnt = 0;
         int i = 0;
 	for (i; str[i] != '\0'; ){ //ここでは増減処理[i++]は行わない
 		if (str[i] >= 0x00 && str[i] <= 0x7F) { //1byte文字
@@ -105,26 +97,26 @@ int GetCharByte(unsigned char* str)
 }
 
 
-void showResult(pro* result, int index, int numl, int namel, int pricel,int i)
+void showResult(pro* result,int i)
 {
     int loop = 0;
-    int totalLength = index + numl + namel + pricel;
+    int totalLength = indexL + numL + nameL + priceL;
     for(loop = 0; loop < i + 1; loop++) {
         //ヘッダ表示
         if(loop == 0) {
             printf("NO");
-            showSpace(index, 2);
+            showSpace(indexL, 2);
             printf("|");
 
             printf("商品コード");  
-            showSpace(numl,10);
+            showSpace(numL,10);
             printf("|");
 
             printf("商品名");
-            showSpace(namel,6);
+            showSpace(nameL,6);
             printf("|");
 
-            showSpace(pricel, 4);
+            showSpace(priceL, 4);
             printf("単価");
             printf("|\n");
 
@@ -137,21 +129,21 @@ void showResult(pro* result, int index, int numl, int namel, int pricel,int i)
         else {
             //No表示
             printf("%d",loop);
-            showSpace(index, IndexLength(loop));
+            showSpace(indexL, IndexLength(loop));
             printf("|");
 
             //コード表示
             printf("%s",result->num);
-            showSpace(numl, result->num_l);
+            showSpace(numL, result->num_l);
             printf("|");
 
             //商品名表示
             printf("%s",result->name);
-            showSpace(namel, result->name_l);
+            showSpace(nameL, result->name_l);
             printf("|");
 
             //単価表示(右揃え)
-            showSpace(pricel, result->price_l);
+            showSpace(priceL, result->price_l);
             printf("%s",result->price);
             printf("|\n");
             
